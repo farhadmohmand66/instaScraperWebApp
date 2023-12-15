@@ -1,0 +1,154 @@
+<!-- main.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Scraper</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Your custom CSS styles here */
+        body {
+            background-color: #fafafa;
+        }
+
+        header, footer {
+            background-color: #212529;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        #loading-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #scrollable-frame {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .contact-icons {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Instagram #Hashtags Scraper</h1>
+            {% if 'username' in session and 'password' in session %}
+                <form method="get" action="{{ url_for('logout') }}">
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+            {% endif %}
+
+    </header>
+
+    <div class="container">
+
+    
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+
+
+        {% if 'username' in session and 'password' in session %}
+            <form method="post" action="{{ url_for('main_page') }}">
+                <div class="form-group">
+                    <label for="hashtags">Hashtags (comma-separated):</label>
+                    <input type="text" class="form-control" id="hashtags" name="hashtags" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Scrape</button>
+                <span id="loading-message">Scraping data, please wait...</span>
+            </form>
+
+            <div id="scrollable-frame">
+                {% if data %}
+                    <h2>Scraped Data</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Post Link</th>
+                                <th>Profile Name</th>
+                                <th>Follower Count</th>
+                                <th>Bio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in data %}
+                                <tr>
+                                    <td>{{ item.post_link }}</td>
+                                    <td>{{ item.profile_name }}</td>
+                                    <td>{{ item.follower_count }}</td>
+                                    <td>{{ item.bio }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="{{ url_for('download_csv', csv_filename=csv_filename) }}" class="btn btn-success">Download CSV</a>
+                {% endif %}
+            </div>
+        {% else %}
+    
+            <form method="post" action="{{ url_for('login') }}">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Display loading message while submitting the form
+        $('form').submit(function () {
+            $('#loading-message').show();
+        });
+    </script>
+
+    <footer>
+        <div class="container">
+            <div class="float-right">
+                <a href="https://linkedin.com/in/farhadmohmand66" target="_blank" class="contact-icons"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/farhadMohmand66" target="_blank" class="contact-icons"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+            <p>&copy; 2023 Instagram Scraper</p>
+        </div>
+    </footer>
+
+
+
+</body>
+</html>
+<!-- ****************************************************************************************** -->
+
