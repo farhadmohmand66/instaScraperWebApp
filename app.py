@@ -200,7 +200,7 @@ def download_csv(csv_filename):
     return send_file(csv_filename, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=False)
 
 # #################################################################
 
