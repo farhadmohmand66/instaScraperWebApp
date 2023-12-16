@@ -1,2 +1,2 @@
 ## Instagram #Hashtag Scraper
-Flask web app and Jupyter Nootbook
+Flask web app and Jupyter Notebook
